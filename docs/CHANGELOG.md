@@ -29,6 +29,42 @@ this package adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - A replaced official tool no longer leaves its own `tool:<name>` system-prompt section behind. Section text resolves before the assembly waterfall, so the hidden `read`/`glob`/`grep` guidance still told the model to call a tool the captured step refuses. The section is now dropped together with the mask and returns when the tool does.
 - 被替换的官方工具不再留下自己的 `tool:<name>` 系统提示段落。段落文本在装配瀑布之前解析，于是被隐藏的 `read`/`glob`/`grep` 指引仍让模型去调用该步拒绝的工具。现在它与掩码一起移除，工具恢复时指引也恢复。
 
+## [0.5.7] — 2026-11-27 — Patch release
+
+- Preserve sealed panel reports when a merge overlaps session close. Concurrent folds share
+  viewer updates, invalid workspaces share one warning per activation, and a live fold hashes
+  the same bytes it parses (#976).
+- 面板折叠与会话关闭重叠时保留已封存的报告。并发折叠共享查看器更新，无效工作区每次启用
+  只告警一次，实时折叠从同一份日志字节生成内容和哈希（#976）。
+- Track registry admission per agent, preserve the original failure on cleanup, and restore Bash
+  and official-tool replacements when the tools service restarts at the same configuration (#953).
+- 按 agent 跟踪注册结果，清理时保留原始失败原因；工具服务按原配置重启后恢复 Bash 和官方工具替换（#953）。
+- Pass the agent and selected model into presentation probes so persona variables resolve
+  during Native and PTC detection (#954).
+- 展示探测带上 agent 和已选模型，让 Native 与 PTC 模式判断时正常解析人设变量（#954）。
+- Capture PTC dispatches, job lifecycle, inbox splices and todo writes in the panel. Bash jobs
+  pass their host call identities, and a pruned result stays visible when it replaces a row
+  in a full view (#698, #909).
+- 面板记录 PTC 派发、作业生命周期、收件箱改写和待办写入。Bash 作业传递宿主调用 ID，
+  视图满额时保留裁剪后的工具结果（#698、#909）。
+- Keep executor edits and other settings in one revision-checked draft, and retranslate save
+  notices when the display language changes (#1028).
+- 执行器与其他设置共用带修订号的草稿，保存提示随界面语言更新（#1028）。
+- Refresh the Windows companion detection as soon as the plugin manager mounts. Show
+  installation only after a successful inventory confirms the companion is absent (#750).
+- 插件管理服务就绪后刷新 Windows 伴侣插件检测。仅在成功的清单查询确认未安装时显示
+  安装入口（#750）。
+- Recognize Entra user SIDs when setting the owner of a temporary Windows test fixture (#1031).
+- 设置 Windows 临时测试夹具的所有者时支持 Entra 用户 SID（#1031）。
+- Per-host state is now keyed through `rootOf(ctx)`, which reads the `Symbol.for('cordis.root')` key
+  before the legacy `ctx.root` property. Cordis 4.2 refuses undeclared property reads, so the 21 direct
+  `ctx.root` reads failed activation with `cannot get property "root" without inject`. Cordis 4.1 remains supported. (#1047)
+- 每主机状态的键改由 `rootOf(ctx)` 取得：先读 `Symbol.for('cordis.root')`，再回退旧的 `ctx.root` 属性。
+  Cordis 4.2 拒绝读取未声明的属性，21 处直接读取 `ctx.root` 会令激活失败并报
+  `cannot get property "root" without inject`。Cordis 4.1 行为不变。（#1047）
+- Admit DSH `0.2.3-alpha.2` alongside the existing `0.2.2` range and adapt PTC guidance and output detection to the scoped Node REPL. Update working-directory and result lifecycle integration for the new host. (#1059)
+- 在原有 `0.2.2` 范围之外接受 DSH `0.2.3-alpha.2`。适配 Node scoped REPL 的 PTC 提示与输出识别，并更新工作目录和结果生命周期的宿主接入。（#1059）
+
 ## [0.5.6] — 2026-11-21 — Patch release
 
 - ops-ptc's batching teacher trajectory now teaches sandbox authority: the lesson states the
